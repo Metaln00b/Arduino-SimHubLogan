@@ -19,7 +19,7 @@ void setup() {
     Serial.begin(115200);
     SPI.begin();
 
-    if (CAN0.begin(MCP_ANY, CAN_50KBPS, MCP_8MHZ) == CAN_OK)
+    if (CAN0.begin(MCP_ANY, CAN_500KBPS, MCP_8MHZ) == CAN_OK)
     {
         Serial.println("MCP2515 Initialized Successfully!");
         delay(1000);
@@ -125,6 +125,7 @@ void process_message() {
 }
 
 void loop() {
+    /*
     if (Serial.available() > 0)
     {
         Serial.readBytesUntil('{', simhub_message_buf, BUF_SIZE);
@@ -133,4 +134,19 @@ void loop() {
         process_message();
         memset(simhub_message_buf, 0x0, BUF_SIZE);
     }
+    */
+
+    uint8_t data380[8] = {0b11001000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    for (size_t i = 0; i < 255; i++)
+    {
+        uint8_t data186[1] = {i};
+        CAN0.sendMsgBuf(0x186, 0, 1, data186);
+        uint8_t data217[4] = {0x00, 0x00, 0x00, i};
+        CAN0.sendMsgBuf(0x217, 0, 4, data217);
+    }
+
+    
+    CAN0.sendMsgBuf(0x350, 0, 8, data380);
+    delay(300);
 }
