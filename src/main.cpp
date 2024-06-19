@@ -71,7 +71,7 @@ void process_message() {
     
 
     uint8_t calculated_revs = revs / ENGINE_SPEED_FACTOR;
-    uint8_t calculated_speed = speed_kmh / 1.4;//(speed_kmh + 39.16) / 1.329;//1.630 * speed_kmh - 13.791;
+    uint8_t calculated_speed = 0.61 * speed_kmh + 8.47;
 
     uint8_t data350[8] = {0b11001000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t data217[4] = {0x00, 0x00, 0x00, calculated_speed};
